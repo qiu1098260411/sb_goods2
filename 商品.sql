@@ -1,0 +1,34 @@
+DROP DATABASE IF EXISTS goods2;
+CREATE DATABASE goods2;
+USE goods2;
+
+CREATE TABLE product(
+	id INT(5) PRIMARY KEY AUTO_INCREMENT COMMENT'商品id',
+	productName VARCHAR(10) NOT NULL COMMENT'商品名称',
+	quantity INT(5) NOT NULL COMMENT'库存量'
+)COMMENT='商品';
+
+CREATE TABLE takeout(
+	id INT(5) PRIMARY KEY AUTO_INCREMENT COMMENT'记录id',
+	quanitty INT(5) NOT NULL COMMENT'数量',
+	outDate DATETIME NOT NULL COMMENT'出库时间',
+	`handler` VARCHAR(6) NOT NULL COMMENT'经手人',
+	productId INT(5) NOT NULL COMMENT'商品id',
+	CONSTRAINT FK_product_takeout_productId FOREIGN KEY(productId) REFERENCES product(id)  ON DELETE CASCADE
+)COMMENT='出库记录表';
+
+INSERT INTO product VALUES
+(DEFAULT,'可口可乐',20),
+(DEFAULT,'百事可乐',30),
+(DEFAULT,'王老吉',40),
+(DEFAULT,'脉动',50),
+(DEFAULT,'绿茶',60),
+(DEFAULT,'苏打水',70);
+
+INSERT INTO takeout VALUES
+(DEFAULT,3,'2020-10-25 09:02:02','王一',1),
+(DEFAULT,4,'2020-10-24 09:03:03','李二',2),
+(DEFAULT,5,'2020-10-23 09:04:04','张三',3),
+(DEFAULT,6,'2020-10-22 09:05:05','赵四',4),
+(DEFAULT,7,'2020-10-21 09:06:06','邱五',5),
+(DEFAULT,8,'2020-10-20 09:07:07','林六',6);

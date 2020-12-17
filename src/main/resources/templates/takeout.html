@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品出库</title>
+    <script type="text/javascript" src="/js/jquery-1.12.4.js"></script>
+</head>
+<body>
+<form action="/addTakeOut" onsubmit="return sub()">
+    <table width="500px" align="center" border="1px">
+        <caption style="font-weight: bold;font-size: 50px">
+            商品出库
+        </caption>
+        <tbody>
+        <tr>
+            <td>出库商品：</td>
+            <td>
+                <select name="productId" id="productId">
+                    <option th:value="0" th:text="---请选择---"></option>
+                    <span  th:each="productName,i:${productNames}">
+                       <option th:value="${i.count}" th:text="${productName}"></option>
+                   </span>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>数量：</td>
+            <td>
+                <input type="text" name="quanitty"  id="quanitty" onblur="checkQuantity()" >
+                <span id="checkquanitty" style="color: red"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>经手人：</td>
+            <td>
+                <input type="text" name="handler" id="handler">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div align="center" style="text-align: center" >
+        <input type="submit" value="提交">
+        <input type="reset" value="重置">
+    </div>
+</form>
+</body>
+</html>
+<script>
+    function checkQuantity() {
+        var quanitty=$("#quanitty").val();
+        var productId=$("#productId").val();
+        $.getJSON("/queryQuantity",{"id":productId},function (data) {
+            if(data<quanitty){
+                $("#checkquanitty").text("库存不足，库存量为"+data);
+            }else{
+                $("#checkquanitty").text("");
+            }
+        })
+    }
+    function sub() {
+        var reg=/^[1-9]\d*$/;
+        if($("#productId").val()=='0'){
+            alert("请选择商品");
+            return false;
+        }
+        if(!reg.test($("#quanitty").val())||$("#checkquanitty").text()!=''){
+            alert("请正确输入商品出库数量");
+            return false;
+        }
+        if($("#handler").val()==''){
+            alert("请输入经手人");
+            return false;
+        }
+        return true;
+    }
+</script>

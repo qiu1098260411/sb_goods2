@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.harry.mapper.GoodsMapper">
+    <select id="queryProducts" resultType="Product">
+        select product.id, productName, quantity from goods2.product
+        <where>
+            <if test="id!=0">
+                and id=#{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryProductName" resultType="String">
+        select productName from product
+    </select>
+
+    <insert id="addTakeOut">
+        insert into takeout values
+        (default,#{quanitty}, NOW(),#{handler},#{productId})
+    </insert>
+
+    <update id="updateQuantity">
+        update product set quantity=quantity-#{quanitty} where id=#{productId}
+    </update>
+</mapper>

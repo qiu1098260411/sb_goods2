@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <script type="text/javascript" src="/js/jquery-1.12.4.js"></script>
+</head>
+<body>
+<table align="center" width="800px" >
+    <caption style="font-weight: bold;font-size: 50px;color: burlywood">
+        商品信息
+    </caption>
+    <thead>
+    <tr style="text-align: center">
+        <td colspan="2">
+           <form action="/queryProducts">
+               <select th:name="id">
+                   <option th:value="0" th:text="---请选择---"></option>
+                   <span  th:each="product:${products}">
+                       <option th:value="${product.getId()}" th:text="${product.getProductName()}"></option>
+                   </span>
+               </select>
+               <input type="submit" value="查询">
+           </form>
+        </td>
+        <td>
+            <input type="button" value="商品出库" onclick="query()">
+        </td>
+    </tr>
+    <tr style="font-weight: bold;background-color: burlywood">
+        <td>商品id</td>
+        <td>商品名称</td>
+        <td>商品库存量</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product:${products}">
+        <td th:text="${product.getId()}"></td>
+        <td th:text="${product.getProductName()}"></td>
+        <td th:text="${product.getQuantity()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+<script>
+    function query() {
+        self.location="/queryProductName";
+    }
+</script>
